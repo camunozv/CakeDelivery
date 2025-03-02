@@ -1,6 +1,6 @@
 # Cake Delivery - Compilers 2024-2 UNAL
 
-This is a general outline for the README file it doesnt
+This is a general layout for the README file it doesnt
 fully represents the final result of the project.
 
 ## Description
