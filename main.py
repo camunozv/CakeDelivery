@@ -15,15 +15,19 @@ tokens = ('RECOGER', 'SALIR', 'DE', 'LLEVAR',
 
 # BASIC COMMANDS
 # There's no associated action for these tokens.
-t_RECOGER = r'RECOGER'
-t_SALIR = r'SALIR'
-t_DE = r'DE'
-t_LLEVAR = r'LLEVAR'
-t_AVANZAR = r'AVANZAR'
+# Longer commands should be specified first, since
+# they are intended to be tokenized first. This is 
+# maximal munch! :D
 t_ESQUIVAR = r'ESQUIVAR'
-t_GOLPEAR = r'GOLPEAR'
-t_CON = r'CON'
 t_ENTREGAR = r'ENTREGAR'
+t_RECOGER = r'RECOGER'
+t_GOLPEAR = r'GOLPEAR'
+t_AVANZAR = r'AVANZAR'
+t_LLEVAR = r'LLEVAR'
+t_SALIR = r'SALIR'
+t_CON = r'CON'
+t_DE = r'DE'
+
 
 # OBJECT TOKEN
 # The action here is to save the value of the object identifier.
@@ -32,26 +36,31 @@ def t_OBJECT_KEYWORD(t):
     t.value = str(t.value)
     return t
 
+
 # NEWLINE COUNTER
 # Counting newlines, however this is not necessary.
 def t_ignore_newline(t):
     r'[\n]+'
     t.lexer.lineno += t.value.count('\n')
 
+
 # WHITESPACE HANDLER
 # Consumes any kind of whitespace
 t_WHITESPACE = r'[\f\r\v\u0020\t]+'
+
     
 # Error handler for illegal characters
 # Unrecognized characters fall here.
 # Observe that we don't have upper case letters; we've defined
-# that the objects should always be in lower case.
+# that the objects should always be named with lower case letters.
 def t_error(t):
     print(f'Illegal character {t.value[0]!r}')
     t.lexer.skip(1)
 
+
 # Build the lexer object
 lexer = lex()
+
 
 # Loop for data reading
 result = ''
@@ -62,20 +71,18 @@ while True:
         break
     result += new_input + ' '
 
-result = result[:-1] 
-lexer.input(result)
+result = result[:-1] # delete end of line whitespace
+lexer.input(result) # fully tokenize input
 
-# Tokenizer loop
+
+# Save all tokens
 token_list = []
-while True:
-    tokens = lexer.token()
-    if not tokens: 
-        break      # No more input
+for tokens in lexer:
     token_list.append(tokens)
 
+# Print tokens
 i = 0
 for tokens in token_list:
     i += 1
     print(f'{i}', tokens)
-# LexToken(LPAREN,'(',1,0) The last number in the tuple represents the index in which 
-# the character appears. The second one represents the line where it appears.
+    
