@@ -1,6 +1,6 @@
 ##########################################################
 ##########################################################
-###              LEXER IMPLEMENTATION                 ####
+###              LEXER+PARSER IMPLEMENTATION          ####
 ###               cake delivery game                  ####
 ##########################################################
 ##########################################################
@@ -8,10 +8,23 @@
 from ply.lex import lex
 from ply.yacc import yacc
 
-# GENERAL TOKENS
-tokens = ('RECOGER', 'SALIR', 'DE', 'LLEVAR',
-          'AVANZAR', 'ESQUIVAR', 'GOLPEAR', 'CON',
-          'ENTREGAR', 'GAME_OBJECT', 'WHITESPACE')
+# --- INVENTARIO ---
+# Variable global para almacenar los objetos recogidos
+inventario = set()
+
+# Función para verificar si un objeto está en el inventario
+def tiene_objeto(objeto):
+    return objeto in inventario
+
+# -- Lexer --
+tokens = (
+    'RECOGER', 'SALIR', 'DE', 'LLEVAR', 'AVANZAR', 'ESQUIVAR', 'GOLPEAR', 'CON',
+    'ENTREGAR', 'OBJETO', 'WHITESPACE', 'DIRECCION', 'A', 'HERRAMIENTA'
+)
+
+# WHITESPACE HANDLER
+# Consumes any kind of whitespaceRE
+t_ignore = '[\f\r\v\u0020\t]+'
 
 # BASIC COMMANDS
 # There's no associated action for these tokens.
@@ -27,13 +40,24 @@ t_LLEVAR = r'LLEVAR'
 t_SALIR = r'SALIR'
 t_CON = r'CON'
 t_DE = r'DE'
+t_A = r'A'
 
 
 # OBJECT TOKEN
 # The action here is to save the value of the object identifier.
-def t_GAME_OBJECT(t):
+def t_OBJETO(t):
     r'[a-z]+'
     t.value = str(t.value)
+    return t
+
+# Direcciones válidas
+def t_DIRECCION(t):
+    r'norte|sur|este|oeste'
+    return t
+
+# Herramientas/armas para golpear
+def t_HERRAMIENTA(t):
+    r'cabeza|pie|puño|espada'  # La espada ahora es una herramienta/arma
     return t
 
 
@@ -46,9 +70,8 @@ def t_GAME_OBJECT(t):
 #    t.lexer.lineno += t.value.count('\n')
 
 
-# WHITESPACE HANDLER
-# Consumes any kind of whitespace
-t_WHITESPACE = r'[\f\r\v\u0020\t]+'
+
+
 
 
 # Error handler for illegal characters
@@ -66,22 +89,58 @@ def t_error(t):
 # Build the lexer object
 lexer = lex()
 
-# Loop for data reading
-result = ''
-new_input = ''
+## --- PARSER ---
+
+#Reglas del parser
+def p_comando_recoger(p):
+    '''comando : RECOGER OBJETO'''
+    objeto = p[2]
+    if objeto == 'espada':
+        inventario.add(objeto)
+        print(f"Comando RECOGER: Recogiste {objeto}")
+    else:
+        print(f"Comando RECOGER: No puedes recoger {objeto}")
+    
+def p_comando_avanzar(p):
+    '''comando : AVANZAR DIRECCION'''
+    print(f"Comando AVANZAR: Avanzaste hacia el {p[2]}")
+    
+def p_comando_llevar(p):
+    '''comando : LLEVAR OBJETO'''
+    objeto = p[2]
+    if objeto == 'postre1':
+        inventario.add(objeto)
+    print(f"Comando LLEVAR: Llevaste un {p[2]}")
+    
+def p_comando_golpear(p):
+    '''comando : GOLPEAR CON HERRAMIENTA'''
+    herramienta = p[3]
+    if herramienta == 'espada' and not tiene_objeto('espada'):
+        print("Error: No tienes una espada.")
+    else:
+        print(f"Comando GOLPEAR: Golpeaste con {herramienta}")
+        
+def p_comando_entregar(p):
+    '''comando : ENTREGAR OBJETO A OBJETO'''
+    print(f"Comando ENTREGAR: Entregaste {p[2]} a {p[4]}")
+
+# Manejo de errores sintácticos
+def p_error(p):
+    if p:
+        print(f"Error de sintaxis en '{p.value}'")
+    else:
+        print("Error de sintaxis: comando incompleto")
+
+parser = yacc()
+
+# --- LOOP PRINCIPAL ---
 while True:
-    new_input = str(input('Enter Command > '))
-    if not new_input:
+    try:
+        comando = input('Enter Command > ')
+        if not comando:
+            break
+
+        # Pasar el comando al parser (el lexer se usa internamente)
+        parser.parse(comando)
+    except EOFError:
         break
-    result += new_input + ' '
-
-result = result[:-1]  # delete end of line whitespace
-lexer.input(result)  # fully tokenize input
-
-# Save and print all tokens
-token_list = []
-i = 0
-for tokens in lexer:
-    i += 1
-    token_list.append(tokens)
-    print(f'{i}', tokens)
