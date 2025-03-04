@@ -24,7 +24,6 @@ ubicaciones = {
         "descripcion": "Llegaste a la panadería del pueblo y recibes tu encomienda. Debes llevarle un postre entre: galletas, torta de arándano, o helado a la princesa Maria José. ¿Qué deseas hacer?",
         "conexiones": {
             "sur": "bosque",  # Desde la panadería, al sur está el bosque
-            "oeste": "princesa" #test
         },
         "objetos": {
             "galletas",
@@ -137,13 +136,18 @@ def recoger_objeto(objeto):
     else:
         print(f"Error: No hay {objeto} en esta ubicación.")
 
-def entregar_objeto(objeto):
+def entregar_objeto(objeto, persona):
     global ubicacion_actual
 
-    if ubicacion_actual == "princesa":
-        if objeto in inventario:  # Verifica que efectivamente tienes el objeto
-            inventario.remove(objeto)  # Elimina el objeto del inventario
-            print(f"Entregaste {objeto} a la princesa.")  
-            actualizar_descripcion_princesa()  # Ahora actualiza la descripción correctamente
+    if tiene_objeto(objeto):  # Verifica que efectivamente tienes el objeto
+        if ubicacion_actual == "princesa":  # Verifica que estás en la habitación correcta
+            if persona == "princesa":
+                inventario.remove(objeto)  # Elimina el objeto del inventario
+                print(f"Comando ENTREGAR: Entregaste {objeto} a {persona}.")
+                actualizar_descripcion_princesa()
+            else:
+                print(f"Error: No está {persona} aquí.")
         else:
-            print("Error: No tienes ese objeto en tu inventario.")
+            print(f"Error: Debes estar en la habitación de la princesa para entregarle el postre. Estas en {ubicacion_actual}")
+    else:
+        print("Error: No tienes ese objeto en tu inventario.")
