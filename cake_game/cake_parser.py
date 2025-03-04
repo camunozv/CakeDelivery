@@ -44,12 +44,12 @@ def p_comando_golpear(p):
 
 def p_comando_entregar(p):
     """comando : ENTREGAR OBJETO A OBJETO"""
-    ubicacion = get_ubicacion_actual
+    global ubicacion_actual
     objeto = p[2]
     persona = p[4]
 
     if tiene_objeto(objeto):
-        if ubicacion == "princesa":  # Verifica que estás en la habitación correcta
+        if ubicacion_actual == "princesa":  # Verifica que estás en la habitación correcta
             if persona == "princesa":
                 entregar_objeto(objeto)  # Pasa el objeto correctamente
                 print(f"Comando ENTREGAR: Entregaste {objeto} a {persona}.")
