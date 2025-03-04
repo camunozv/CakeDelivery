@@ -3,10 +3,11 @@ from game_logic import mostrar_ubicacion_actual
 
 
 # --- LOOP PRINCIPAL ---
+print("Bienvenido a Cake Game!")
 while True:
     try:
-        mostrar_ubicacion_actual()# Mostrar la ubicación actual después de cada comando.
-        comando = input('Enter Command > ')
+        mostrar_ubicacion_actual()  # Mostrar la ubicación actual después de cada comando.
+        comando = input("Enter Command > ")
         if not comando:
             break
 
