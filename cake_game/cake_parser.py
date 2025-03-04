@@ -26,9 +26,9 @@ def p_comando_avanzar(p):
 def p_comando_llevar(p):
     """comando : LLEVAR OBJETO"""
     objeto = p[2]
-    if objeto == "postre1":
-        inventario.add(objeto)
-    print(f"Comando LLEVAR: Llevaste un {p[2]}")
+    recoger_objeto(objeto)
+    print(f"Comando LLEVAR: Llevaste un {objeto}")
+
 
 
 def p_comando_golpear(p):
