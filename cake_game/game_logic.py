@@ -23,7 +23,8 @@ ubicaciones = {
     "panaderia": {
         "descripcion": "Llegaste a la panadería del pueblo y recibes tu encomienda. Debes llevarle un postre entre: galletas, torta de arándano, o helado a la princesa Maria José. ¿Qué deseas hacer?",
         "conexiones": {
-            "sur": "bosque"  # Desde la panadería, al sur está el bosque
+            "sur": "bosque",  # Desde la panadería, al sur está el bosque
+            "oeste": "princesa" #test
         },
         "objetos": {
             "galletas",
@@ -41,11 +42,19 @@ ubicaciones = {
         },
         "objetos": set(),
     },
+    "princesa": {
+        "descripcion": "Llegaste a la habitación de la princesa, ¿Qué dese",
+        "conexiones": {},
+        "objetos": set(),
+    }
 
 }
 
 ubicacion_actual = "castillo"  # Ubicación inicial del jugador
+postres = {"galletas", "torta de arándano", "helado"}
 
+def get_ubicacion_actual():
+    return ubicacion_actual
 
 # --- FUNCIONES DEL JUEGO ---
 def mover_jugador(direccion):
@@ -55,11 +64,12 @@ def mover_jugador(direccion):
     if direccion in ubicacion["conexiones"]:
         nueva_ubicacion = ubicacion["conexiones"][direccion]
         ubicacion_actual = nueva_ubicacion
-        print(f"Comando AVANZAR: Te moviste al {direccion}.")
+        print(f"Comando AVANZAR: Te moviste al {direccion}. {ubicacion_actual}")
         #mostrar_ubicacion_actual()
+        if nueva_ubicacion == "princesa":
+            actualizar_descripcion_princesa()
     else:
         print(f"Error: No puedes avanzar al {direccion} desde aquí.")
-
 
 def mostrar_ubicacion_actual():
     ubicacion = ubicaciones[ubicacion_actual]
@@ -69,7 +79,7 @@ def mostrar_ubicacion_actual():
 def actualizar_descripcion_panaderia():
     ubicacion = ubicaciones["panaderia"]
     objetos_restantes = ubicacion["objetos"]
-    postres = {"galletas", "torta de arándano", "helado"}
+    global postres
 
     # Verifica si el jugador ya tiene un postre en su inventario
     if any(tiene_objeto(postre) for postre in postres):
@@ -98,6 +108,17 @@ def actualizar_descripcion_castillo():
         descripcion += ", ".join(objetos_restantes) + ". ¿Qué deseas hacer?"
         ubicacion["descripcion"] = descripcion
 
+def actualizar_descripcion_princesa():
+    ubicacion = ubicaciones["princesa"]
+
+    global postres
+    postre_en_inventario = next((postre for postre in postres if tiene_objeto(postre)), None)
+
+    if postre_en_inventario:
+        ubicacion["descripcion"] = f"¡Has al castillo de la princesa llegado! ¿Deseas entregar el {postre_en_inventario}?"
+    else:
+        ubicacion["descripcion"] = "¡Felicidades! Has completado tu viaje. La princesa está contenta…"
+
 
 def recoger_objeto(objeto):
     global ubicacion_actual
@@ -115,3 +136,14 @@ def recoger_objeto(objeto):
             actualizar_descripcion_panaderia()
     else:
         print(f"Error: No hay {objeto} en esta ubicación.")
+
+def entregar_objeto(objeto):
+    global ubicacion_actual
+
+    if ubicacion_actual == "princesa":
+        if objeto in inventario:  # Verifica que efectivamente tienes el objeto
+            inventario.remove(objeto)  # Elimina el objeto del inventario
+            print(f"Entregaste {objeto} a la princesa.")  
+            actualizar_descripcion_princesa()  # Ahora actualiza la descripción correctamente
+        else:
+            print("Error: No tienes ese objeto en tu inventario.")

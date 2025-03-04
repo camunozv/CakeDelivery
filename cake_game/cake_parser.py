@@ -7,6 +7,8 @@ from game_logic import (
     ubicacion_actual,
     mover_jugador,
     recoger_objeto,
+    entregar_objeto,
+    get_ubicacion_actual
 )
 
 
@@ -42,7 +44,22 @@ def p_comando_golpear(p):
 
 def p_comando_entregar(p):
     """comando : ENTREGAR OBJETO A OBJETO"""
-    print(f"Comando ENTREGAR: Entregaste {p[2]} a {p[4]}")
+    ubicacion = get_ubicacion_actual
+    objeto = p[2]
+    persona = p[4]
+
+    if tiene_objeto(objeto):
+        if ubicacion == "princesa":  # Verifica que estás en la habitación correcta
+            if persona == "princesa":
+                entregar_objeto(objeto)  # Pasa el objeto correctamente
+                print(f"Comando ENTREGAR: Entregaste {objeto} a {persona}.")
+            else:
+                print(f"Error: No está {persona} aquí.")
+        else:
+            print(f"Error: Debes estar en la habitación de la princesa para entregarle el postre. Estas en {ubicacion_actual}")
+    else:
+        print(f"Error: No tienes {objeto} en tu inventario.")
+
 
 
 def p_comando_salir(p):
