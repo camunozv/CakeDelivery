@@ -1,8 +1,5 @@
 # Cake Delivery - Compilers 2024-2 UNAL
 
-This is a general layout for the README file it doesnt
-fully represents the final result of the project.
-
 ## Description
 This project is a simple text-based game developed for our compilers class. In Cake Delivery, you play as a brave knight tasked with delivering a special cake to the princess. Your journey will take you through various locations, including a castle, a bakery, and a dark forest. Along the way, you'll need to collect items, avoid dangers, and solve challenges to complete your mission.
 
