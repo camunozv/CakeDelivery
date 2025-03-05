@@ -2,7 +2,7 @@
 inventario = set()
 
 n_bosque = 2; cont_bosque = 0
-n_salida = 2
+n_salida = 2; cont_salida = 0
 
 
 def tiene_objeto(objeto):
@@ -49,6 +49,11 @@ ubicaciones = {
         "conexiones": {},
         "objetos": set(),
     },
+    "salida": {
+        "descripcion": "¡Has salido vivo del bosque! Felicidades, eres muy valiente. El castillo de la princesa está cerca, sigue avanzando.",
+        "conexiones": {},
+        "objetos": set(),
+    },
     "princesa": {
         "descripcion": "Llegaste a la habitación de la princesa, ¿Qué dese",
         "conexiones": {},
@@ -76,7 +81,16 @@ def mover_jugador(direccion):
         if cont_bosque >= n_bosque:
             ubicacion_actual = "ogro"
             cont_bosque = 0
-            print("Has encontrado la guarida del ogro. ¡Prepárate!")
+        return 
+    
+    if ubicacion_actual == "salida":
+        cont_salida += 1  # Incrementar el contador cada vez que avanza en la salida del bosque
+        print(f"Comando AVANZAR: Te sigues acercando al castillo de la princesa... ({cont_salida}/{n_salida})")
+        ubicacion["descripcion"] = "Sigues en el camino. ¿Hacia donde deseas avanzar?"
+
+        if cont_salida >= n_salida:
+            ubicacion_actual = "princesa"
+            cont_salida = 0
         return 
 
     if direccion in ubicacion["conexiones"]:
