@@ -1,6 +1,9 @@
 # --- INVENTARIO ---
 inventario = set()
 
+n_bosque = 2; cont_bosque = 0
+n_salida = 2; cont_salida = 0
+
 
 def tiene_objeto(objeto):
     return objeto in inventario
@@ -41,6 +44,16 @@ ubicaciones = {
         },
         "objetos": set(),
     },
+    "ogro": {
+        "descripcion": "",
+        "conexiones": {},
+        "objetos": set(),
+    },
+    "salida": {
+        "descripcion": "¡Has salido vivo del bosque! Felicidades, eres muy valiente. El castillo de la princesa está cerca, sigue avanzando.",
+        "conexiones": {},
+        "objetos": set(),
+    },
     "princesa": {
         "descripcion": "Llegaste a la habitación de la princesa, ¿Qué dese",
         "conexiones": {},
@@ -57,13 +70,33 @@ def get_ubicacion_actual():
 
 # --- FUNCIONES DEL JUEGO ---
 def mover_jugador(direccion):
-    global ubicacion_actual
+    global ubicacion_actual, cont_bosque
     ubicacion = ubicaciones[ubicacion_actual]
+
+    if ubicacion_actual == "bosque":
+        cont_bosque += 1  # Incrementar el contador cada vez que avanza en el bosque
+        print(f"Comando AVANZAR: Sigues avanzando en el bosque... ({cont_bosque}/{n_bosque})")
+        ubicacion["descripcion"] = "Sigues en el bosque tenebroso. ¿Hacia donde deseas avanzar?"
+
+        if cont_bosque >= n_bosque:
+            ubicacion_actual = "ogro"
+            cont_bosque = 0
+        return 
+    
+    if ubicacion_actual == "salida":
+        cont_salida += 1  # Incrementar el contador cada vez que avanza en la salida del bosque
+        print(f"Comando AVANZAR: Te sigues acercando al castillo de la princesa... ({cont_salida}/{n_salida})")
+        ubicacion["descripcion"] = "Sigues en el camino. ¿Hacia donde deseas avanzar?"
+
+        if cont_salida >= n_salida:
+            ubicacion_actual = "princesa"
+            cont_salida = 0
+        return 
 
     if direccion in ubicacion["conexiones"]:
         nueva_ubicacion = ubicacion["conexiones"][direccion]
         ubicacion_actual = nueva_ubicacion
-        print(f"Comando AVANZAR: Te moviste al {direccion}. {ubicacion_actual}")
+        print(f"Comando AVANZAR: Te moviste al {direccion}.")
         #mostrar_ubicacion_actual()
         if nueva_ubicacion == "princesa":
             actualizar_descripcion_princesa()
