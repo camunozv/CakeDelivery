@@ -1,0 +1,153 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DE
+    ESQUIVAR
+    SALIR
+
+Grammar
+
+Rule 0     S' -> comando
+Rule 1     comando -> RECOGER OBJETO
+Rule 2     comando -> AVANZAR DIRECCION
+Rule 3     comando -> LLEVAR OBJETO
+Rule 4     comando -> GOLPEAR CON HERRAMIENTA
+Rule 5     comando -> ENTREGAR OBJETO A OBJETO
+
+Terminals, with rules where they appear
+
+A                    : 5
+AVANZAR              : 2
+CON                  : 4
+DE                   : 
+DIRECCION            : 2
+ENTREGAR             : 5
+ESQUIVAR             : 
+GOLPEAR              : 4
+HERRAMIENTA          : 4
+LLEVAR               : 3
+OBJETO               : 1 3 5 5
+RECOGER              : 1
+SALIR                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+comando              : 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . comando
+    (1) comando -> . RECOGER OBJETO
+    (2) comando -> . AVANZAR DIRECCION
+    (3) comando -> . LLEVAR OBJETO
+    (4) comando -> . GOLPEAR CON HERRAMIENTA
+    (5) comando -> . ENTREGAR OBJETO A OBJETO
+
+    RECOGER         shift and go to state 2
+    AVANZAR         shift and go to state 3
+    LLEVAR          shift and go to state 4
+    GOLPEAR         shift and go to state 5
+    ENTREGAR        shift and go to state 6
+
+    comando                        shift and go to state 1
+
+state 1
+
+    (0) S' -> comando .
+
+
+
+state 2
+
+    (1) comando -> RECOGER . OBJETO
+
+    OBJETO          shift and go to state 7
+
+
+state 3
+
+    (2) comando -> AVANZAR . DIRECCION
+
+    DIRECCION       shift and go to state 8
+
+
+state 4
+
+    (3) comando -> LLEVAR . OBJETO
+
+    OBJETO          shift and go to state 9
+
+
+state 5
+
+    (4) comando -> GOLPEAR . CON HERRAMIENTA
+
+    CON             shift and go to state 10
+
+
+state 6
+
+    (5) comando -> ENTREGAR . OBJETO A OBJETO
+
+    OBJETO          shift and go to state 11
+
+
+state 7
+
+    (1) comando -> RECOGER OBJETO .
+
+    $end            reduce using rule 1 (comando -> RECOGER OBJETO .)
+
+
+state 8
+
+    (2) comando -> AVANZAR DIRECCION .
+
+    $end            reduce using rule 2 (comando -> AVANZAR DIRECCION .)
+
+
+state 9
+
+    (3) comando -> LLEVAR OBJETO .
+
+    $end            reduce using rule 3 (comando -> LLEVAR OBJETO .)
+
+
+state 10
+
+    (4) comando -> GOLPEAR CON . HERRAMIENTA
+
+    HERRAMIENTA     shift and go to state 12
+
+
+state 11
+
+    (5) comando -> ENTREGAR OBJETO . A OBJETO
+
+    A               shift and go to state 13
+
+
+state 12
+
+    (4) comando -> GOLPEAR CON HERRAMIENTA .
+
+    $end            reduce using rule 4 (comando -> GOLPEAR CON HERRAMIENTA .)
+
+
+state 13
+
+    (5) comando -> ENTREGAR OBJETO A . OBJETO
+
+    OBJETO          shift and go to state 14
+
+
+state 14
+
+    (5) comando -> ENTREGAR OBJETO A OBJETO .
+
+    $end            reduce using rule 5 (comando -> ENTREGAR OBJETO A OBJETO .)
+

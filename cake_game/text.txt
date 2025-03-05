@@ -1,0 +1,22 @@
+Enter Command > RECOGER pechera
+Comando RECOGER: Recogiste pechera.
+Despiertas, tienes una entrega pendiente, ponte tu armadura y lleva tu espada. En tu habitación están los siguientes objetos: espada, botas. ¿Qué deseas hacer?
+Enter Command > RECOGER espada
+Comando RECOGER: Recogiste espada.
+Despiertas, tienes una entrega pendiente, ponte tu armadura. En tu habitación están los siguientes objetos: botas. ¿Qué deseas hacer?
+Enter Command > RECOGER botas
+Comando RECOGER: Recogiste botas.
+Ya te alistaste! Dirígete a la panadería antes de que se te haga tarde.
+Enter Command > AVANZAR norte
+Comando AVANZAR: Te moviste al norte. panaderia
+Llegaste a la panadería del pueblo y recibes tu encomienda. Debes llevarle un postre entre: galletas, torta de arándano, o helado a la princesa Maria José. ¿Qué deseas hacer?
+Enter Command > LLEVAR galletas
+Comando RECOGER: Recogiste galletas.
+Comando LLEVAR: Llevaste un galletas
+Ya tienes un postre para la princesa. ¡Llévaselo antes de que se enfríe!
+Enter Command > AVANZAR oeste
+Comando AVANZAR: Te moviste al oeste. princesa
+¡Has al castillo de la princesa llegado! ¿Deseas entregar el galletas?
+Enter Command > ENTREGAR galletas A princesa
+Error: Debes estar en la habitación de la princesa para entregarle el postre. Estas en castillo
+¡Has al castillo de la princesa llegado! ¿Deseas entregar el galletas?
