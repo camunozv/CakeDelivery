@@ -18,6 +18,7 @@ tokens = (
     "DIRECCION",
     "A",
     "HERRAMIENTA",
+    "AYUDA"
 )
 
 # WHITESPACE HANDLER
@@ -36,15 +37,21 @@ t_SALIR = r"SALIR"
 t_CON = r"CON"
 t_DE = r"DE"
 t_A = r"A"
+t_AYUDA = r'AYUDA'
+
 
 
 def t_DIRECCION(t):
     r"norte|sur|este|oeste"
     return t
 
+def t_HERRAMIENTA(t):
+    r'puño|patada'
+    return t
 
 def t_OBJETO(t):
     r"[a-z]+"
+    # Si es "espada", se trata como OBJETO por defecto
     return t
 
 

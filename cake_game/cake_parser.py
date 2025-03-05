@@ -1,13 +1,11 @@
 from ply.yacc import yacc
 from cake_lexer import lexer, tokens, t_DIRECCION
 from game_logic import (
-    inventario,
-    tiene_objeto,
-    ubicaciones,
-    ubicacion_actual,
     mover_jugador,
     recoger_objeto,
-    entregar_objeto
+    entregar_objeto,
+    mostrar_ayuda,
+    golpear_ogro
 )
 
 
@@ -17,6 +15,9 @@ def p_comando_recoger(p):
     objeto = p[2]
     recoger_objeto(objeto)
 
+def p_comando_ayuda(p):
+    """comando : AYUDA"""
+    mostrar_ayuda()
 
 def p_comando_avanzar(p):
     """comando : AVANZAR DIRECCION"""
@@ -33,12 +34,13 @@ def p_comando_llevar(p):
 
 
 def p_comando_golpear(p):
-    """comando : GOLPEAR CON HERRAMIENTA"""
+    """comando : GOLPEAR CON HERRAMIENTA
+               | GOLPEAR CON OBJETO"""
     herramienta = p[3]
-    if herramienta == "espada" and not tiene_objeto("espada"):
-        print("Error: No tienes una espada.")
+    if herramienta == "espada":
+        golpear_ogro("espada")  # Tratar "espada" como herramienta
     else:
-        print(f"Comando GOLPEAR: Golpeaste con {herramienta}")
+        golpear_ogro(herramienta)
 
 
 def p_comando_entregar(p):
